@@ -1,30 +1,47 @@
 <template>
     <li class="password-item" v-on:click="clickItem">
+      <div class="clickable">
+        <transition name="slide-fade">
+          <span>{{ name }}</span>
+        </transition>
+      </div>
       <transition name="slide-fade">
-        <span>{{ name }}</span>
+        <password-modal
+          v-if="modalOpened"
+          :password="password"
+          :visible.sync="modalOpened"
+        >
+          </password-modal>
       </transition>
     </li>
 </template>
 
 <script>
+import PasswordModal from './utils/PasswordModal.vue'
+
 export default {
   props: ['password'],
   data: () => {
     return {
-      name: ''
+      name: '',
+      modalOpened: false
     }
+  },
+  components: {
+    PasswordModal
   },
   methods: {
     async clickItem () {
       // Decode password
       try {
-        let passwordObject = await this.$octopassSdk.getPasswordManager().getPassword(this.password.id)
-        let pass = await this.$octopassSdk.getPasswordManager().decodePassword('Test', passwordObject)
-        console.log('Mot de passe: ' + pass)
-        this.name = 'Copied in your clipboard!'
-        setTimeout(() => {
-          this.name = this.getPasswordName()
-        }, 3000)
+        this.modalOpened = true
+        // let passwordObject = await this.$octopassSdk.getPasswordManager().getPassword(this.password.id)
+        // let pass = await this.$octopassSdk.getPasswordManager().decodePassword('Test', passwordObject)
+        // console.log('Mot de passe: ' + pass)
+        // this.name = 'Copied in your clipboard!'
+        // setTimeout(() => {
+        //   this.name = this.getPasswordName()
+        // }, 3000)
       } catch (err) {
         console.log(err)
       }
@@ -40,17 +57,19 @@ export default {
 </script>
 
 <style>
-
 .password-item {
   list-style: none;
-  padding: 10px 0;
   background: #FFFFFF;
   border-bottom: 1px solid #EAEAEA;
+}
+
+.password-item .clickable {
+  padding: 10px 0;
   cursor: pointer;
   transition: .2s ease padding;
 }
 
-.password-item:hover {
+.password-item .clickable:hover {
   padding: 15px 0;
   transition: .2s ease padding;
 }
