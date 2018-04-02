@@ -1,13 +1,15 @@
 <template>
   <div class="password-modal" v-click-outside="closeModal">
-    <h1>Please enter your password</h1>
-    <p>This is the only thing that can retrieve your password</p>
     <div class="ask-pass" v-if="uncryptedPass === ''">
+      <h1>Please enter your password</h1>
+      <p>This is the only thing that can retrieve your password</p>
       <input type="password" v-model="userPassword" placeholder="Please type here your password"/>
       <button @click="uncryptPassword">Get my password</button>
     </div>
     <div class="uncrypted-pass" v-if="uncryptedPass !== ''">
-      <input type="text" v-model="uncryptedPass"/>
+      <h1>Success</h1>
+      <p>Your password has been uncrypted successfully</p>
+      <h3>{{ uncryptedPass }}</h3>
       <button @click="copyPassword">{{ buttonLabel }}</button>
     </div>
     <p class="alert-error" v-if="errorMessage !== ''">{{ errorMessage }}</p>
@@ -38,7 +40,7 @@ export default {
     return {
       userPassword: '',
       errorMessage: '',
-      buttonLabel: 'Copy',
+      buttonLabel: 'Copy the password',
       uncryptedPass: ''
     }
   },
@@ -62,7 +64,13 @@ export default {
       }
     },
     copyPassword () {
-      this.$clipboard(this.uncryptedPass)
+      let input = document.createElement('input')
+      input.type = 'text'
+      input.value = this.uncryptedPass
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand('copy')
+      input.remove()
       this.buttonLabel = 'Copied!'
     },
     closeModal () {
