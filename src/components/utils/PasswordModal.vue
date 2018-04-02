@@ -2,8 +2,14 @@
   <div class="password-modal">
     <h1>Please enter your password</h1>
     <p>This is the only thing that can retrieve your password</p>
-    <input type="password" v-model="userPassword" placeholder="Please type here your password"/>
-    <button v-on:click="uncryptPassword">{{ buttonLabel }}</button>
+    <div class="ask-pass" v-if="uncryptedPass === ''">
+      <input type="password" v-model="userPassword" placeholder="Please type here your password"/>
+      <button @click="uncryptPassword">Get my password</button>
+    </div>
+    <div class="uncrypted-pass" v-if="uncryptedPass !== ''">
+      <input type="text" v-model="uncryptedPass"/>
+      <button @click="copyPassword">{{ buttonLabel }}</button>
+    </div>
     <p class="alert-error" v-if="errorMessage !== ''">{{ errorMessage }}</p>
   </div>
 </template>
@@ -30,7 +36,8 @@ export default {
     return {
       userPassword: '',
       errorMessage: '',
-      buttonLabel: 'Get my password'
+      buttonLabel: 'Copy',
+      uncryptedPass: ''
     }
   },
   methods: {
@@ -44,14 +51,14 @@ export default {
           return
         }
         this.errorMessage = ''
-        console.log('Mot de passe: ' + pass)
-        this.buttonLabel = 'Copied!'
-        setTimeout(() => {
-          this.$emit('update:visible', false)
-        }, 3000)
+        this.uncryptedPass = pass
       } catch (err) {
         console.log(err)
       }
+    },
+    copyPassword () {
+      this.$clipboard(this.uncryptedPass)
+      this.buttonLabel = 'Copied!'
     }
   }
 }
