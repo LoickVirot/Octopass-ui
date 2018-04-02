@@ -44,13 +44,7 @@ export default {
 <style>
 
 .form .form-control input {
-  display: block;
-  width: 100%;
-  border-radius: 0;
-  border: 1px solid #EAEAEA;
   border-bottom: 0;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
 .form .form-control input:first-child {
@@ -62,19 +56,6 @@ export default {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   border-bottom: 1px solid #EAEAEA;
-}
-
-.form button {
-  background: #4e7ad9;
-  font-size: 1em;
-  border: 0;
-  border-radius: 5px;
-  padding: 7px 15px;;
-  color: #FFFFFF;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 10px;
-  display: inline-block;
 }
 
 .alert-error {

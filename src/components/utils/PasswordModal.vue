@@ -1,5 +1,5 @@
 <template>
-  <div class="password-modal">
+  <div class="password-modal" v-click-outside="closeModal">
     <h1>Please enter your password</h1>
     <p>This is the only thing that can retrieve your password</p>
     <div class="ask-pass" v-if="uncryptedPass === ''">
@@ -30,6 +30,8 @@
 </style>
 
 <script>
+import ClickOutside from 'vue-click-outside'
+
 export default {
   props: ['password', 'visible'],
   data () {
@@ -39,6 +41,9 @@ export default {
       buttonLabel: 'Copy',
       uncryptedPass: ''
     }
+  },
+  directives: {
+    ClickOutside
   },
   methods: {
     async uncryptPassword () {
@@ -59,6 +64,9 @@ export default {
     copyPassword () {
       this.$clipboard(this.uncryptedPass)
       this.buttonLabel = 'Copied!'
+    },
+    closeModal () {
+      this.$emit('update:visible', false)
     }
   }
 }

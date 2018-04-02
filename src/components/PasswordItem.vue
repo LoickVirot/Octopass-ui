@@ -32,16 +32,8 @@ export default {
   },
   methods: {
     async clickItem () {
-      // Decode password
       try {
         this.modalOpened = true
-        // let passwordObject = await this.$octopassSdk.getPasswordManager().getPassword(this.password.id)
-        // let pass = await this.$octopassSdk.getPasswordManager().decodePassword('Test', passwordObject)
-        // console.log('Mot de passe: ' + pass)
-        // this.name = 'Copied in your clipboard!'
-        // setTimeout(() => {
-        //   this.name = this.getPasswordName()
-        // }, 3000)
       } catch (err) {
         console.log(err)
       }
