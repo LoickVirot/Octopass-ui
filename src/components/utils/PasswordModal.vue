@@ -8,8 +8,8 @@
     </div>
     <div class="uncrypted-pass" v-if="uncryptedPass !== ''">
       <h1>Success</h1>
-      <p>Your password has been uncrypted successfully</p>
-      <h3>{{ uncryptedPass }}</h3>
+      <p>Your password has been uncrypted successfully. Click to the field below to see it.</p>
+      <input class="result-input" :type="passInputType" :value="uncryptedPass" @click="changeInputType" readonly/>
       <button @click="copyPassword">{{ buttonLabel }}</button>
     </div>
     <p class="alert-error" v-if="errorMessage !== ''">{{ errorMessage }}</p>
@@ -23,11 +23,16 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     padding: 20px;
     width: 500px;
-    height: 220px;
+    height: 250px;
     overflow: auto;
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
+  }
+
+  .result-input {
+    cursor: pointer;
+    text-align: center
   }
 </style>
 
@@ -41,7 +46,8 @@ export default {
       userPassword: '',
       errorMessage: '',
       buttonLabel: 'Copy the password',
-      uncryptedPass: ''
+      uncryptedPass: '',
+      passInputType: 'password'
     }
   },
   directives: {
@@ -75,6 +81,13 @@ export default {
     },
     closeModal () {
       this.$emit('update:visible', false)
+    },
+    changeInputType () {
+      if (this.passInputType === 'password') {
+        this.passInputType = 'text'
+      } else {
+        this.passInputType = 'password'
+      }
     }
   }
 }
